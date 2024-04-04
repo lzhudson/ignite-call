@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@ignite-ui/react": "^2.2.4",
+    "@prisma/client": "^5.12.1",
     "next": "14.0.4",
     "phosphor-react": "^1.4.1",
     "react": "^18",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "prisma": "^5.12.1",
     "typescript": "^5"
   }
 }
