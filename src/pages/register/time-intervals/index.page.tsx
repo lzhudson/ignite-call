@@ -97,11 +97,10 @@ export default function TimeIntervals() {
   const intervals = watch('intervals')
 
   async function handleSetTimeIntervals(data: any) {
-    const formData = data as TimeIntervalsFormDataOutput
-    console.log(formData)
+    const { intervals } = data as TimeIntervalsFormDataOutput
 
     await api.post('/users/time-intervals', {
-      formData,
+      intervals,
     })
   }
 
@@ -161,7 +160,7 @@ export default function TimeIntervals() {
         {errors.intervals && (
           <FormError size="sm">{errors.intervals.root?.message}</FormError>
         )}
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitting}>
           Próximo passo
           <ArrowRight />
         </Button>
