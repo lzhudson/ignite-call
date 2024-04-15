@@ -19,7 +19,7 @@ import { ArrowRight } from 'phosphor-react'
 
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { getWeekDays } from '@/utils/get-week-dats'
+import { getWeekDays } from '@/utils/get-week-days'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { converTimeStringToMinutes } from '@/utils/convert-time-string-to-minutes'
 import { api } from '@/lib/axios'
