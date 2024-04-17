@@ -16,11 +16,6 @@ export function Calendar() {
     return dayjs().set('date', 1)
   })
 
-  const shortWeekDays = getWeekDays({ short: true })
-
-  const currentMonth = currentDate.format('MMMM')
-  const currentYear = currentDate.format('YYYY')
-
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
     setCurrentDate(previousMonthDate)
@@ -30,6 +25,11 @@ export function Calendar() {
     const nextMonthDate = currentDate.add(1, 'month')
     setCurrentDate(nextMonthDate)
   }
+
+  const shortWeekDays = getWeekDays({ short: true })
+
+  const currentMonth = currentDate.format('MMMM')
+  const currentYear = currentDate.format('YYYY')
 
   return (
     <CalendarContainer>
