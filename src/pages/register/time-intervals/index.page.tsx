@@ -100,6 +100,7 @@ export default function TimeIntervals() {
 
   const intervals = watch('intervals')
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function handleSetTimeIntervals(data: any) {
     const { intervals } = data as TimeIntervalsFormDataOutput
 
