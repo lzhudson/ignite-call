@@ -49,7 +49,7 @@ export function ConfirmStep({
       date: schedulingDate,
     })
 
-    await router.push(`/schedule/${username}`)
+    await router.push(`/schedule/${username}?schedulingDate=${schedulingDate}`)
 
     onCancelConfirmation()
   }
