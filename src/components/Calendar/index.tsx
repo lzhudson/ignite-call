@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight } from 'phosphor-react'
+import { CaretLeft, CaretRight, X } from 'phosphor-react'
 import {
   CalendarActions,
   CalendarBody,
@@ -6,16 +6,23 @@ import {
   CalendarDay,
   CalendarHeader,
   CalendarTitle,
+  ToastRoot,
+  ToastTitle,
+  ToastViewport,
+  ToastAction,
   TooltipArrow,
   TooltipContent,
+  ToastDescription,
 } from './styles'
 import { getWeekDays } from '@/utils/get-week-days'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
 import Tooltip from '../Tooltip'
+import Toast from '../Toast'
+import { Text } from '@ignite-ui/react'
 
 interface CalendarWeek {
   week: number
@@ -42,7 +49,31 @@ export function Calendar({ onDateSelected }: CalendarProps) {
     return dayjs().set('date', 1)
   })
 
+  const [open, setOpen] = useState(false)
+
   const router = useRouter()
+
+  const schedulingDate = router.query.schedulingDate
+    ? String(router.query.schedulingDate)
+    : null
+
+  const describedDate = dayjs(schedulingDate).format('DD[ de ]MMMM[ de ]YYYY')
+  const describedTime = dayjs(schedulingDate).format('HH[:]mm[h]')
+
+  useEffect(() => {
+    if (schedulingDate) {
+      setOpen(true)
+    }
+  }, [schedulingDate, router])
+
+  function onUpdateUrlAfterCloseToast() {
+    const currentPath = router.asPath
+    const pathWithoutQueryParams = currentPath.substring(
+      0,
+      currentPath.indexOf('?'),
+    )
+    router.push(pathWithoutQueryParams, undefined, { shallow: true })
+  }
 
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
@@ -205,6 +236,30 @@ export function Calendar({ onDateSelected }: CalendarProps) {
           })}
         </tbody>
       </CalendarBody>
+      <Toast.Provider swipeDirection="right">
+        <ToastRoot
+          open={open}
+          onOpenChange={(value) => {
+            setOpen(value)
+            onUpdateUrlAfterCloseToast()
+          }}
+        >
+          <ToastTitle asChild>
+            <Text size="xl">Agendamento realizado</Text>
+          </ToastTitle>
+          <ToastDescription asChild>
+            <Text size="sm">
+              {describedDate} ás {describedTime}
+            </Text>
+          </ToastDescription>
+          <ToastAction asChild altText="Close toast">
+            <button title="Close toast">
+              <X />
+            </button>
+          </ToastAction>
+        </ToastRoot>
+        <ToastViewport />
+      </Toast.Provider>
     </CalendarContainer>
   )
 }
