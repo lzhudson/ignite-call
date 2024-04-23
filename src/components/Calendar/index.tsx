@@ -6,6 +6,8 @@ import {
   CalendarDay,
   CalendarHeader,
   CalendarTitle,
+  TooltipArrow,
+  TooltipContent,
 } from './styles'
 import { getWeekDays } from '@/utils/get-week-days'
 import { useMemo, useState } from 'react'
@@ -13,6 +15,7 @@ import dayjs from 'dayjs'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import Tooltip from '../Tooltip'
 
 interface CalendarWeek {
   week: number
@@ -175,12 +178,25 @@ export function Calendar({ onDateSelected }: CalendarProps) {
                 {days.map(({ date, disabled }) => {
                   return (
                     <td key={date.toString()}>
-                      <CalendarDay
-                        onClick={() => onDateSelected(date.toDate())}
-                        disabled={disabled}
-                      >
-                        {date.get('date')}
-                      </CalendarDay>
+                      <Tooltip.Provider>
+                        <Tooltip.Root>
+                          <Tooltip.Trigger asChild>
+                            <CalendarDay
+                              onClick={() => onDateSelected(date.toDate())}
+                              disabled={disabled}
+                            >
+                              {date.get('date')}
+                            </CalendarDay>
+                          </Tooltip.Trigger>
+                          <Tooltip.Portal>
+                            <TooltipContent>
+                              {dayjs(date).format('DD[ de ]MMMM')}
+                              {disabled ? ' - Indisponível' : ' - Disponível'}
+                              <TooltipArrow />
+                            </TooltipContent>
+                          </Tooltip.Portal>
+                        </Tooltip.Root>
+                      </Tooltip.Provider>
                     </td>
                   )
                 })}
